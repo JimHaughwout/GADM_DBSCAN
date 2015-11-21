@@ -1,7 +1,8 @@
+import settings
 import utils
 
-DATA_FILE = "/Users/jim/DEV/gadm_scan/data/points_of_interest.csv"
 
-measure_set = utils.import_measures(DATA_FILE)
+measure_set = utils.import_measures(settings.DATA_FILE)
 for measure in measure_set:
-    print "%s (%.4f, %.4f)" % (measure['name'], measure['lat'], measure['lng'])
+    print "%s (%.4f, %.4f)" % (measure[settings.NAME_KEY],
+     measure[settings.LAT_KEY], measure[settings.LAT_KEY])

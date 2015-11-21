@@ -1,17 +1,34 @@
+import settings
 import json
 import decimal
 from sys import exit
 import csv
-#from geopy.distance import vincenty
+from geopy.distance import vincenty
+
+def dist_calc(poi_1, poi_2, mode='default'):
+    """
+    TODO DOCS
+    """
+    try:
+        point_1 = (poi_1[settings.LAT_KEY], poi_1[settings.LNG_KEY])
+        nbhd_1 = poi_1[settings.NBHD_KEY]
+        point_2 = (poi_2[settings.LAT_KEY], poi_2[settings.LNG_KEY])
+        nbhd_2 = poi_2[settings.NBHD_KEY]
+    except:
+        print "\nPassed invalid POIs"
+        print "POI 1:\n%r" % poi_1
+        print "POI 2:\n%r\n" % poi_2
+        exit(3) 
 
 
-def half_even(num_val, n_places=4):
+
+def half_even(num_val, n_places=settings.DEFAULT_ROUNDING):
     """
     ROUND_HALF_EVEN a point to n_places decimal places
     """
     if not 0 < n_places <= 8:
-        print "Can only round to 1-8 decimal places. Defaulting to two"
-        n_places = 2
+        print "Can only round to 1-8 decimal places. Rounding to default"
+        n_places = settings.DEFAULT_ROUNDING
 
     try:
         rounding = str(10**int(-1 * n_places))
@@ -36,7 +53,8 @@ def print_json(data):
         raise e
 
 
-def import_measures(source_csv, lat_col='lat', lng_col='lng', rounding=4):
+def import_measures(source_csv, lat_col=settings.LAT_KEY, 
+    lng_col=settings.LNG_KEY, rounding=settings.DEFAULT_ROUNDING):
     """"
     Reads in CSV, converting each row to a dictionary and attempting
     to half-even round lat and lng to rounding level.
