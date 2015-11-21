@@ -29,13 +29,14 @@ def dist_calc(poi_1, poi_2, mode='simple'):
     # For now we treat close points in a city as a penalty (due to traffic)
     # But treat close points in the same Neighborhood as a bonus
     # This gives us simple urbanization
-    # TODO real data science scalars
+    # TODO real data science scalars or use open data like this 
+    # http://infinitemonkeycorps.net/projects/cityspeed/
     multiplier = 1.0
     if mode == 'gadm':
         if city_1 == city_2:
-            multiplier *= 2.0
+            multiplier *= 4.0
         if nbhd_1 == nbhd_2:
-            multiplier *= 0.4
+            multiplier *= 0.8
 
     distance = vincenty(point_1, point_2).km
     
