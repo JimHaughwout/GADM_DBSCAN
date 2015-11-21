@@ -1,4 +1,4 @@
-import settings
+import settings as s
 import json
 import decimal
 from sys import exit
@@ -11,14 +11,14 @@ def dist_calc(poi_1, poi_2, mode='simple'):
     """
     # Ensure we actually have dicts with values needed
     try:
-        point_1 = (poi_1[settings.LAT_KEY], poi_1[settings.LNG_KEY])
-        name_1 = poi_1[settings.NAME_KEY]
-        nbhd_1 = poi_1[settings.NBHD_KEY]
-        city_1 = poi_1[settings.CITY_KEY]
-        point_2 = (poi_2[settings.LAT_KEY], poi_2[settings.LNG_KEY])
-        name_2 = poi_2[settings.NAME_KEY]
-        nbhd_2 = poi_2[settings.NBHD_KEY]
-        city_2 = poi_2[settings.CITY_KEY]
+        point_1 = (poi_1[s.LAT_KEY], poi_1[s.LNG_KEY])
+        name_1 = poi_1[s.NAME_KEY]
+        nbhd_1 = poi_1[s.NBHD_KEY]
+        city_1 = poi_1[s.CITY_KEY]
+        point_2 = (poi_2[s.LAT_KEY], poi_2[s.LNG_KEY])
+        name_2 = poi_2[s.NAME_KEY]
+        nbhd_2 = poi_2[s.NBHD_KEY]
+        city_2 = poi_2[s.CITY_KEY]
     except:
         print "\nPassed invalid POIs"
         print "POI 1:\n%r" % poi_1
@@ -40,19 +40,19 @@ def dist_calc(poi_1, poi_2, mode='simple'):
 
     distance = vincenty(point_1, point_2).km
     
-    if settings.DEBUG:
+    if s.DEBUG:
         print "%s-%s\nDistance (km): %.3f\nMultiplier: %.2f\n" % (name_1, name_2, distance, multiplier)
 
     return distance * multiplier
 
 
-def half_even(num_val, n_places=settings.DEFAULT_ROUNDING):
+def half_even(num_val, n_places=s.DEFAULT_ROUNDING):
     """
     ROUND_HALF_EVEN a point to n_places decimal places
     """
     if not 0 < n_places <= 8:
         print "Can only round to 1-8 decimal places. Rounding to default"
-        n_places = settings.DEFAULT_ROUNDING
+        n_places = s.DEFAULT_ROUNDING
 
     try:
         rounding = str(10**int(-1 * n_places))
@@ -77,8 +77,8 @@ def print_json(data):
         raise e
 
 
-def import_measures(source_csv, lat_col=settings.LAT_KEY, 
-    lng_col=settings.LNG_KEY, rounding=settings.DEFAULT_ROUNDING):
+def import_measures(source_csv, lat_col=s.LAT_KEY, 
+    lng_col=s.LNG_KEY, rounding=s.DEFAULT_ROUNDING):
     """"
     Reads in CSV, converting each row to a dictionary and attempting
     to half-even round lat and lng to rounding level.
@@ -98,7 +98,7 @@ def import_measures(source_csv, lat_col=settings.LAT_KEY,
                 exit(1)
             measure_set.append(row)
 
-        if settings.DEBUG:
+        if s.DEBUG:
             print "Imported %d points of interest successfully from %s" % (len(measure_set), source_csv)
 
         return measure_set
