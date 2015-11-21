@@ -14,6 +14,7 @@ import getopt
 # TODO need to make these dynamic
 NAME_KEY = 'name'
 ADDR_KEY = 'address'
+NBHD_KEY = 'neighborhood'
 LAT_KEY = 'lat'
 LNG_KEY = 'lng'
 
@@ -28,20 +29,20 @@ def print_usage_and_exit(msg=None):
     sys.exit(2)
 
 
-def extract_poi(row):
+def extract_poi(poi):
     """
     Check if data has desired keys
 
     TODO - make this generic
     """
     try: 
-        poi = json.loads(row)
         name = poi[NAME_KEY]
         addr = poi[ADDR_KEY]
+        nbhd = poi[NBHD_KEY]
         lat = float(poi[LAT_KEY])
         lng = float(poi[LNG_KEY])
 
-        return name, addr, lat, lng
+        return name, addr, nbhd, lat, lng
  
     except (ValueError, KeyError, TypeError) as e:
         print_usage_and_exit(("%r is not in correct format: %s" % (row, e)))
@@ -73,12 +74,13 @@ else:
 
 # Try to open source file and extact events
 try:
-    source = open(infile, 'r')
-    data = source.readlines()
-    source.closed
+    data = list()
+    with open(infile) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            data.append(row)
 except IOError as e:
     print_usage_and_exit(("Could not open %r to read: %s" % (infile, e)))
-
 
 # Try to open target file
 try:
@@ -97,10 +99,11 @@ features = list()
 for row in data:
     row_count += 1
 
-    name, addr, lat, lng = extract_poi(row)
+    name, addr, nbhd, lat, lng = extract_poi(row)
+    coordinates = [lng, lat]
 
     # Build GeoJSON Feature from feature elements and append to list
-    properties = {"name":name, "address":addr, "latitude":lat, "longitude":lng}
+    properties = {"name":name, "address":addr, "neighborhood":nbhd, "latitude":lat, "longitude":lng}
     geometry = {"type":"Point", "coordinates": coordinates}
     feature = {"type":"Feature", "properties":properties, "geometry":geometry}
     features.append(feature)
@@ -114,4 +117,4 @@ target.write(output)
 target.closed
 
 # Tell user done and print stats
-print "SUCCESS: Processed %d rows. Created %d GeoJSON features in %s\n" % (read_count, feature_count, outfile)
+print "SUCCESS: Processed %d rows. Created %d GeoJSON features in %s\n" % (row_count, feature_count, outfile)

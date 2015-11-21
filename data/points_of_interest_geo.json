@@ -12,6 +12,7 @@
       "type" : "Feature",
       "properties" : {
         "latitude" : 38.785724,
+        "neighborhood" : "Oxon Hill",
         "name" : "The Capital Wheel",
         "longitude" : -77.015187,
         "address" : "116 Waterfront St, Oxon Hill, MD 20745, USA"
@@ -28,6 +29,7 @@
       "type" : "Feature",
       "properties" : {
         "latitude" : 38.806429,
+        "neighborhood" : "Old Town",
         "name" : "The Pad",
         "longitude" : -77.04069,
         "address" : "122 Queen St, Alexandria, VA 22314, USA"
@@ -44,6 +46,7 @@
       "type" : "Feature",
       "properties" : {
         "latitude" : 38.803944,
+        "neighborhood" : "Old Town",
         "name" : "Torpedo Factory",
         "longitude" : -77.040545,
         "address" : "105 S Union St, Alexandria, VA 22314, USA"
@@ -60,6 +63,7 @@
       "type" : "Feature",
       "properties" : {
         "latitude" : 38.803209,
+        "neighborhood" : "Eisenhower West",
         "name" : "The Lair",
         "longitude" : -77.087778,
         "address" : "3601 Eisenhower Ave, Alexandria, VA 22304, USA"
@@ -76,6 +80,7 @@
       "type" : "Feature",
       "properties" : {
         "latitude" : 38.80434,
+        "neighborhood" : "Eisenhower West",
         "name" : "Marriott Courtyard ALX",
         "longitude" : -77.091485,
         "address" : "200 Bluestone Rd, Alexandria, VA 22304, USA"
@@ -92,6 +97,7 @@
       "type" : "Feature",
       "properties" : {
         "latitude" : 38.880667,
+        "neighborhood" : "Virginia Square",
         "name" : "Westin Ballston",
         "longitude" : -77.114245,
         "address" : "801 N Glebe Rd, Arlington, VA 22203, USA"
@@ -108,6 +114,7 @@
       "type" : "Feature",
       "properties" : {
         "latitude" : 38.889012,
+        "neighborhood" : "Waverly Hills",
         "name" : "GMU Policy Intl Affairs",
         "longitude" : -77.114369,
         "address" : "4401 15th St N, Arlington, VA 22207, USA"
@@ -124,25 +131,10 @@
       "type" : "Feature",
       "properties" : {
         "latitude" : 38.897068,
+        "neighborhood" : "Northwest Washington",
         "name" : "FDIC",
         "longitude" : -77.040151,
         "address" : "550 17th St NW, Washington, DC 20429, USA"
-      }
-    },
-    {
-      "geometry" : {
-        "type" : "Point",
-        "coordinates" : [
-          -77.032268,
-          38.896601
-        ]
-      },
-      "type" : "Feature",
-      "properties" : {
-        "latitude" : 38.896601,
-        "name" : "Old Ebbitt Grill",
-        "longitude" : -77.032268,
-        "address" : "675 15th St NW, Washington, DC 20005, USA"
       }
     },
     {
@@ -156,9 +148,27 @@
       "type" : "Feature",
       "properties" : {
         "latitude" : 38.898009,
+        "neighborhood" : "Northwest Washington",
         "name" : "Eisenhower Exec Office Bldg",
         "longitude" : -77.038946,
         "address" : "1650 Pennsylvania Ave NW, Washington, DC 20504, USA"
+      }
+    },
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.036062,
+          38.902138
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.902138,
+        "neighborhood" : "Downtown",
+        "name" : "St. Regis - Washington DC",
+        "longitude" : -77.036062,
+        "address" : "923 16th St NW, Washington, DC 20006, USA"
       }
     }
   ]
