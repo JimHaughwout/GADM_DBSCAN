@@ -31,16 +31,16 @@ def dist_calc(poi_1, poi_2, mode='simple'):
     # This gives us simple urbanization
     # TODO real data science scalars
     multiplier = 1.0
-    if mode='gadm':
+    if mode == 'gadm':
         if city_1 == city_2:
             multiplier *= 2.0
-        if nbhd_1 == nbhd_2
+        if nbhd_1 == nbhd_2:
             multiplier *= 0.4
 
     distance = vincenty(point_1, point_2).km
     
     if settings.DEBUG:
-        print "%s-%s\nDistance: %.3f\nMultiplier: %.2f\n" % (name_1, name_2, distance, multiplier)
+        print "%s-%s\nDistance (km): %.3f\nMultiplier: %.2f\n" % (name_1, name_2, distance, multiplier)
 
     return distance * multiplier
 
