@@ -1,0 +1,165 @@
+{
+  "type" : "FeatureCollection",
+  "features" : [
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.015187,
+          38.785724
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.785724,
+        "name" : "The Capital Wheel",
+        "longitude" : -77.015187,
+        "address" : "116 Waterfront St, Oxon Hill, MD 20745, USA"
+      }
+    },
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.04069,
+          38.806429
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.806429,
+        "name" : "The Pad",
+        "longitude" : -77.04069,
+        "address" : "122 Queen St, Alexandria, VA 22314, USA"
+      }
+    },
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.040545,
+          38.803944
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.803944,
+        "name" : "Torpedo Factory",
+        "longitude" : -77.040545,
+        "address" : "105 S Union St, Alexandria, VA 22314, USA"
+      }
+    },
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.087778,
+          38.803209
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.803209,
+        "name" : "The Lair",
+        "longitude" : -77.087778,
+        "address" : "3601 Eisenhower Ave, Alexandria, VA 22304, USA"
+      }
+    },
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.091485,
+          38.80434
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.80434,
+        "name" : "Marriott Courtyard ALX",
+        "longitude" : -77.091485,
+        "address" : "200 Bluestone Rd, Alexandria, VA 22304, USA"
+      }
+    },
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.114245,
+          38.880667
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.880667,
+        "name" : "Westin Ballston",
+        "longitude" : -77.114245,
+        "address" : "801 N Glebe Rd, Arlington, VA 22203, USA"
+      }
+    },
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.114369,
+          38.889012
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.889012,
+        "name" : "GMU Policy Intl Affairs",
+        "longitude" : -77.114369,
+        "address" : "4401 15th St N, Arlington, VA 22207, USA"
+      }
+    },
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.040151,
+          38.897068
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.897068,
+        "name" : "FDIC",
+        "longitude" : -77.040151,
+        "address" : "550 17th St NW, Washington, DC 20429, USA"
+      }
+    },
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.032268,
+          38.896601
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.896601,
+        "name" : "Old Ebbitt Grill",
+        "longitude" : -77.032268,
+        "address" : "675 15th St NW, Washington, DC 20005, USA"
+      }
+    },
+    {
+      "geometry" : {
+        "type" : "Point",
+        "coordinates" : [
+          -77.038946,
+          38.898009
+        ]
+      },
+      "type" : "Feature",
+      "properties" : {
+        "latitude" : 38.898009,
+        "name" : "Eisenhower Exec Office Bldg",
+        "longitude" : -77.038946,
+        "address" : "1650 Pennsylvania Ave NW, Washington, DC 20504, USA"
+      }
+    }
+  ]
+}

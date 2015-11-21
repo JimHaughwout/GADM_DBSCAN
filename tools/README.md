@@ -18,3 +18,11 @@ To make a command line script:
 - Remove `.py` extention
 - `chmod +x` filename
 - Ensure `"/usr/local/bin"` is in your `PATH`
+
+
+#### GeoJSON Utility
+
+Simple helper script that converts CSV of Point of Interest to GeoJSON.
+Useful for visualization or import in to Google, Leaflet, etc.
+
+TODO add getopts to make this more generic
