@@ -5,21 +5,44 @@ from sys import exit
 import csv
 from geopy.distance import vincenty
 
-def dist_calc(poi_1, poi_2, mode='default'):
+def dist_calc(poi_1, poi_2, mode='simple'):
     """
     TODO DOCS
     """
+    # Ensure we actually have dicts with values needed
     try:
         point_1 = (poi_1[settings.LAT_KEY], poi_1[settings.LNG_KEY])
+        name_1 = poi_1[settings.NAME_KEY]
         nbhd_1 = poi_1[settings.NBHD_KEY]
+        city_1 = poi_1[settings.CITY_KEY]
         point_2 = (poi_2[settings.LAT_KEY], poi_2[settings.LNG_KEY])
+        name_2 = poi_2[settings.NAME_KEY]
         nbhd_2 = poi_2[settings.NBHD_KEY]
+        city_2 = poi_2[settings.CITY_KEY]
     except:
         print "\nPassed invalid POIs"
         print "POI 1:\n%r" % poi_1
         print "POI 2:\n%r\n" % poi_2
-        exit(3) 
+        exit(3)
 
+    # Magic Numbery rules are to test was to use GADM features for distance
+    # For now we treat close points in a city as a penalty (due to traffic)
+    # But treat close points in the same Neighborhood as a bonus
+    # This gives us simple urbanization
+    # TODO real data science scalars
+    multiplier = 1.0
+    if mode='gadm':
+        if city_1 == city_2:
+            multiplier *= 2.0
+        if nbhd_1 == nbhd_2
+            multiplier *= 0.4
+
+    distance = vincenty(point_1, point_2).km
+    
+    if settings.DEBUG:
+        print "%s-%s\nDistance: %.3f\nMultiplier: %.2f\n" % (name_1, name_2, distance, multiplier)
+
+    return distance * multiplier
 
 
 def half_even(num_val, n_places=settings.DEFAULT_ROUNDING):
@@ -73,5 +96,8 @@ def import_measures(source_csv, lat_col=settings.LAT_KEY,
                 print "No %s, %s entries in data file %s" % (lat_col, lng_col, source_csv)
                 exit(1)
             measure_set.append(row)
+
+        if settings.DEBUG:
+            print "Imported %d points of interest successfully from %s" % (len(measure_set), source_csv)
 
         return measure_set
