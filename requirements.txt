@@ -1,0 +1,6 @@
+geopy==0.99
+pandas==0.13.1
+pygeocoder==1.2.4
+scikit-learn==0.15.2
+scipy==0.14.0
+simplejson==3.6.5
