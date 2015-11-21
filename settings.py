@@ -1,6 +1,7 @@
 DEBUG = True
 DATA_FILE = "/Users/jim/DEV/gadm_scan/data/points_of_interest.csv"
 
+DEFAULT_RADIUS = 0.5
 DEFAULT_ROUNDING = 4
 
 LAT_KEY = 'lat'

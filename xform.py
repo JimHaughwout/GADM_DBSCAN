@@ -8,6 +8,19 @@ from geopy.distance import vincenty
 DEBUG = s.DEBUG
 
 
+def get_name_list(poi_set):
+    """
+    Returns list of names of POIs in order of appearance in set
+    """
+    assert not isinstance(poi_set, basestring), 'POI set is not list or tuple'
+
+    poi_names = list()
+    for poi in poi_set:
+        poi_names.append(poi[s.NAME_KEY])
+
+    return(poi_names)
+
+
 def get_centroid(poi_set):
     """
     Returns centroid tuple from list or tuple of POIs
