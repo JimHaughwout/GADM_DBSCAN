@@ -41,7 +41,8 @@ def dist_calc(poi_1, poi_2, mode='simple'):
     distance = vincenty(point_1, point_2).km
     
     if s.DEBUG:
-        print "%s-%s\nDistance (km): %.3f\nMultiplier: %.2f\n" % (name_1, name_2, distance, multiplier)
+        print "%s-%s\nDistance (km): %.3f\nMultiplier: %.2f\n" % (name_1, 
+            name_2, distance, multiplier)
 
     return distance * multiplier
 
@@ -94,11 +95,13 @@ def import_measures(source_csv, lat_col=s.LAT_KEY,
                 row[lat_col] = half_even(row[lat_col], rounding)
                 row[lng_col] = half_even(row[lng_col], rounding)
             except:
-                print "No %s, %s entries in data file %s" % (lat_col, lng_col, source_csv)
+                print "No %s, %s entries in data file %s" % (lat_col, lng_col,
+                 source_csv)
                 exit(1)
             measure_set.append(row)
 
         if s.DEBUG:
-            print "Imported %d points of interest successfully from %s" % (len(measure_set), source_csv)
+            print "Imported %d POIs successfully from %s" % (len(measure_set),
+             source_csv)
 
         return measure_set
