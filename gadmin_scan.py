@@ -42,13 +42,28 @@ print("Adjusted Mutual Information: %0.3f"
 print("Silhouette Coefficient: %0.3f"
       % metrics.silhouette_score(X, labels))
 
+# TODO - Xform Back, compute zone size and centroid
+
+# TODO - Externalize This
+for zoa, poi in zip(labels, poi_set):
+    print "\nLocation:\t%s" % poi[s.NAME_KEY]
+    print "Address:\t%s" % poi[s.ADDR_KEY]
+    print "Coords:\t\t(%.4f, %.4f)" % (poi[s.LAT_KEY], poi[s.LNG_KEY])
+    print "ZOA ID:\t\t%d" % zoa
+
+
 ##############################################################################
+# TODO - Learn matplotlib better
 # Plot result
 import matplotlib.pyplot as plt
 
 # Black removed and is used for noise instead.
 unique_labels = set(labels)
 colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
 for k, col in zip(unique_labels, colors):
     if k == -1:
         # Black used for noise.
@@ -66,24 +81,3 @@ for k, col in zip(unique_labels, colors):
 
 plt.title('Estimated number of clusters: %d' % n_clusters_)
 plt.show()
-
-
-
-
-
-
-
-
-"""
-if DEBUG:
-    c_lat, c_lng = xform.get_centroid(poi_set)
-    print "\nlabels_true is %s" % type(labels_true)
-    print labels_true
-    print "\nraw_X is %s" % type(raw_X)
-    print raw_X
-    print "\nCentroid is: (%.4f, %.4f)" % (c_lat, c_lng) 
-    print "\nprojected_X is %s" % type(projected_X)
-    print projected_X
-    print "\nX is %s" % type(X)
-    print X
-"""

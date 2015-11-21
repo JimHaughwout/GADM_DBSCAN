@@ -74,12 +74,13 @@ def poi_cart_projection(poi, centroid):
     y = vincenty((c_lat, c_lng), (poi_lat, c_lng)).km
     if c_lat > poi_lat: y *= -1.0
 
+    """
     if DEBUG:
         print "\nPOI:\t\t%s" % poi[s.NAME_KEY]
         print "Coords:\t\t(%.4f, %.4f)" % (poi_lng, poi_lat)
         print "Centroid:\t(%.4f, %.4f)" % (c_lng, c_lat)
         print "Projects to:\t(%.4f, %4f)" % (x, y)
-
+    """
     return (x, y)
 
 
