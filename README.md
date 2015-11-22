@@ -37,6 +37,3 @@ $ python dbscan_gadm_metric.py
 ###### What's Next
 The desire is to modify the metric calculation to employ GADM features to
 change the distance calcultion (i.e., leverage urbanization vs rural features).
-
-###### Known Issues
-As (Lat, Lng) is actually (Y, X) `matplotlib` plots these with a 90-degree rotation.

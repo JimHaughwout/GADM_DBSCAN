@@ -7,6 +7,21 @@ from geopy.distance import vincenty
 
 DEBUG = s.DEBUG
 
+def lat_lng_tpose(X):
+    """
+    Takes numpy array in [[Lat Lng]] format and returns in [[Lng Lat]] format
+    so we can plot correctly as [[X, Y]] values
+    """
+    s = len(X)
+    lngs = X[:,1] # X values
+    lats = X[:,0] # Y values
+    x = np.reshape(lngs, (s, 1))
+    y = np.reshape(lats, (s, 1))
+
+    X_prime = np.hstack((x, y))
+
+    return X_prime
+
 
 def build_gadm_X(poi_dataset):
     """

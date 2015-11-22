@@ -54,8 +54,9 @@ poi_result_set = utils.add_zoas_to_poi_dataset(labels, poi_dataset)
 utils.output_results(poi_result_set, screen=True, outfile=s.OUTPUT_FILE)
 
 ##############################################################################
-# TODO - Learn matplotlib better
 # Plot result
+# As Lat,Lng is Y,X we need to transpose it
+X_prime = gadm.lat_lng_tpose(X)
 
 # Black removed and is used for noise instead.
 unique_labels = set(labels)
@@ -71,11 +72,11 @@ for k, col in zip(unique_labels, colors):
 
     class_member_mask = (labels == k)
 
-    xy = X[class_member_mask & core_samples_mask]
+    xy = X_prime[class_member_mask & core_samples_mask]
     plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
              markeredgecolor='k', markersize=14)
 
-    xy = X[class_member_mask & ~core_samples_mask]
+    xy = X_prime[class_member_mask & ~core_samples_mask]
     plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
              markeredgecolor='k', markersize=6)
 
