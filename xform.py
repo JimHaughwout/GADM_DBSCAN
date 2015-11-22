@@ -23,7 +23,7 @@ def get_name_list(poi_set):
 
 def get_centroid(poi_set):
     """
-    Returns centroid tuple from list or tuple of POIs
+    Returns centroid lat,lng pair from list or tuple of POI dictionaries
     """
     lat_sum = 0.0
     lng_sum = 0.0

@@ -1,10 +1,10 @@
 import settings as s
 import decimal
-#import json
-from csv import DictReader
+from csv import DictReader, DictWriter, writer
 from sys import exit
 from geopy.distance import vincenty
 from sklearn import metrics
+
 
 def dist_calc(poi_1, poi_2, mode='simple'):
     """
@@ -66,29 +66,24 @@ def half_even(num_val, n_places=s.DEFAULT_ROUNDING):
         raise
     return x
 
-"""
-def print_json(data):
 
-    try:
-        print json.dumps(data, indent=2, sort_keys=True)
-    except ValueError as e:
-        e = "Cannot convert data to JSON for printing:\n%r" % data
-        print e
-        raise e
-"""
-
-def import_measures(source_csv, lat_col=s.LAT_KEY, 
+def import_poi_csv(source_csv, lat_col=s.LAT_KEY, 
     lng_col=s.LNG_KEY, rounding=s.DEFAULT_ROUNDING):
     """"
-    Reads in CSV, converting each row to a dictionary and attempting
+    Reads in CSV, converting each row to a POI dictionary and attempting
     to half-even round lat and lng to rounding level.
     Appends to a list and returns the list for iterable in-memory processing
 
     TODO make this more generic on column names with a lambda function
     """
-    measure_set = list()
-    with open(source_csv) as csvfile:
-        data = DictReader(csvfile)
+    if str(source_csv)[-4:] != '.csv':
+        print "import_poi_csv: %s is not a csv file" % source_csv
+        exit(1)
+
+    poi_dataset = list()
+    poi_count = 0
+    with open(source_csv) as source:
+        data = DictReader(source)
         for row in data:
             try:
                 row[lat_col] = half_even(row[lat_col], rounding)
@@ -97,13 +92,13 @@ def import_measures(source_csv, lat_col=s.LAT_KEY,
                 print "No %s, %s entries in data file %s" % (lat_col, lng_col,
                  source_csv)
                 exit(1)
-            measure_set.append(row)
+            poi_dataset.append(row)
+            poi_count += 1
 
         if s.DEBUG:
-            print "Imported %d POIs successfully from %s" % (len(measure_set),
-             source_csv)
+            print "Imported %d POIs successfully from %s" % (poi_count, source_csv)
 
-        return measure_set
+        return poi_dataset
 
 
 def print_dbscan_metrics(X, n_clusters_, labels_true, labels):
@@ -124,26 +119,38 @@ def print_dbscan_metrics(X, n_clusters_, labels_true, labels):
           % metrics.silhouette_score(X, labels))
 
 
-def output_results(dbscan_labels, n_clusters_, poi_dataset, 
-    screen=True, outfile=None):
+def add_zoas_to_poi_dataset(dbscan_labels, poi_dataset):
+    """
+    Modifies a list of POI dictionaries to add ZOAs from DBSCAN
+    """
+    poi_dataset_with_zoas = list()
+    for zoa, poi in zip(dbscan_labels, poi_dataset):
+        poi[s.ZOA_KEY] = zoa
+        poi_dataset_with_zoas.append(poi)
+
+    return poi_dataset_with_zoas
+
+
+def output_results(poi_result_set, screen=True, outfile=None):
     """
     Outputs results to screen or csv file
     """
-    index_num = 0
-    for zoa, poi in zip(dbscan_labels, poi_dataset):
-        index_num += 1
-        if screen:
-            if index_num == 1:
-                print "\nZOA Results: %d POIs in %d ZOAs" % (len(dbscan_labels), 
-                    n_clusters_)
-                print "="*80,
+    assert not isinstance(poi_result_set, basestring), 'POI result set is not list or tuple'
+
+    if screen:
+        print "\nZOAs by POI"
+        print "="*80,
+        for poi in poi_result_set:                
             print "\nLocation:\t%s" % poi[s.NAME_KEY]
             print "Address:\t%s" % poi[s.ADDR_KEY]
-            print "Coords:\t\t(%.4f, %.4f)" % (poi[s.LAT_KEY], poi[s.LNG_KEY])
-            print "ZOA ID:\t\t%d" % zoa 
-
-        if outfile:
-            # Validate outfile name
-            assert isinstance (outfile, str), "Outfile name is not a string: %r" % name
-            if outfile[-4:] != '.csv': outfile += '.csv'
-            # Rest is TODO
+            print "Neighborhood:\t%s" % poi[s.NBHD_KEY]
+            print "Coordinates:\t%.4f, %.4f" % (poi[s.LAT_KEY], poi[s.LNG_KEY])
+            print "ZOA ID:\t\t%d" % poi[s.ZOA_KEY] 
+        
+    if outfile:
+        assert isinstance (outfile, str), "Outfile name is not a string: %r" % name
+        if outfile[-4:] != '.csv': outfile += '.csv'
+        with open(outfile, 'wb') as f:  # Just use 'w' mode in 3.x
+            target = DictWriter(f, poi_result_set[0].keys())
+            target.writeheader()
+            target.writerows(poi_result_set)

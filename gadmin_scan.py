@@ -4,6 +4,9 @@ import xform
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN
+import matplotlib.pyplot as plt
+
+from sys import exit # FOR NOW
 
 DEBUG = s.DEBUG
 
@@ -20,12 +23,12 @@ TODO - PEP8-style documentation.
 
 ##############################################################################
 # Load in data
-poi_set = utils.import_measures(s.DATA_FILE)
+poi_dataset = utils.import_poi_csv(s.INPUT_FILE)
 
 ##############################################################################
 # Project and Transform
-labels_true = np.array(xform.get_name_list(poi_set))
-projected_X = np.array(xform.cart_projection(poi_set))
+labels_true = np.array(xform.get_name_list(poi_dataset))
+projected_X = np.array(xform.cart_projection(poi_dataset))
 X = StandardScaler().fit_transform(projected_X)
 
 ##############################################################################
@@ -44,16 +47,15 @@ utils.print_dbscan_metrics(X, n_clusters_, labels_true, labels)
 
 ##############################################################################
 # TODO - Xform Back, compute zone size and centroid
+poi_result_set = utils.add_zoas_to_poi_dataset(labels, poi_dataset)
 
 ##############################################################################
 # Output Results
-
-utils.output_results(labels, n_clusters_, poi_set)
+utils.output_results(poi_result_set, screen=True, outfile=s.OUTPUT_FILE)
 
 ##############################################################################
 # TODO - Learn matplotlib better
 # Plot result
-import matplotlib.pyplot as plt
 
 # Black removed and is used for noise instead.
 unique_labels = set(labels)

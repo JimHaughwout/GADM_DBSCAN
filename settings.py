@@ -1,5 +1,6 @@
 DEBUG = True
-DATA_FILE = "/Users/jim/DEV/gadm_scan/data/points_of_interest.csv"
+INPUT_FILE = "/Users/jim/DEV/gadm_scan/data/points_of_interest.csv"
+OUTPUT_FILE = "/Users/jim/Desktop/zoa_results.csv"
 
 DEFAULT_RADIUS = 0.5
 DEFAULT_ROUNDING = 4
@@ -10,4 +11,5 @@ ADDR_KEY = 'address'
 NBHD_KEY = 'neighborhood'
 CITY_KEY = 'city'
 NAME_KEY = 'name'
+ZOA_KEY = 'zoa_id'
 
