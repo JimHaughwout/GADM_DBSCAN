@@ -1,9 +1,10 @@
 import settings as s
-import json
 import decimal
+#import json
+from csv import DictReader
 from sys import exit
-import csv
 from geopy.distance import vincenty
+from sklearn import metrics
 
 def dist_calc(poi_1, poi_2, mode='simple'):
     """
@@ -65,18 +66,16 @@ def half_even(num_val, n_places=s.DEFAULT_ROUNDING):
         raise
     return x
 
-
+"""
 def print_json(data):
-    """
-    Prints out algorthm data in human-readable JSON
-    """
+
     try:
         print json.dumps(data, indent=2, sort_keys=True)
     except ValueError as e:
         e = "Cannot convert data to JSON for printing:\n%r" % data
         print e
         raise e
-
+"""
 
 def import_measures(source_csv, lat_col=s.LAT_KEY, 
     lng_col=s.LNG_KEY, rounding=s.DEFAULT_ROUNDING):
@@ -89,7 +88,7 @@ def import_measures(source_csv, lat_col=s.LAT_KEY,
     """
     measure_set = list()
     with open(source_csv) as csvfile:
-        data = csv.DictReader(csvfile)
+        data = DictReader(csvfile)
         for row in data:
             try:
                 row[lat_col] = half_even(row[lat_col], rounding)
@@ -105,3 +104,37 @@ def import_measures(source_csv, lat_col=s.LAT_KEY,
              source_csv)
 
         return measure_set
+
+
+def print_dbscan_metrics(X, n_clusters_, labels_true, labels):
+    """
+    Print metrics on DBSCAN to screen.
+    """
+    print "\nModel Performance and Metrics"
+    print "="*80
+    print('Estimated number of clusters: %d' % n_clusters_)
+    print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))
+    print("Completeness: %0.3f" % metrics.completeness_score(labels_true, labels))
+    print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
+    print("Adjusted Rand Index: %0.3f"
+          % metrics.adjusted_rand_score(labels_true, labels))
+    print("Adjusted Mutual Information: %0.3f"
+          % metrics.adjusted_mutual_info_score(labels_true, labels))
+    print("Silhouette Coefficient: %0.3f"
+          % metrics.silhouette_score(X, labels))
+
+
+def output_results(dbscan_labels, poi_dataset, mode='screen'):
+    """
+    Outputs results to screen or csv file
+    """
+    if mode in ('screen', 'all'):
+            print "\nZOA Results"
+            print "="*80,
+
+    for zoa, poi in zip(dbscan_labels, poi_dataset):
+        if mode in ('screen', 'all'):
+            print "\nLocation:\t%s" % poi[s.NAME_KEY]
+            print "Address:\t%s" % poi[s.ADDR_KEY]
+            print "Coords:\t\t(%.4f, %.4f)" % (poi[s.LAT_KEY], poi[s.LNG_KEY])
+            print "ZOA ID:\t\t%d" % zoa

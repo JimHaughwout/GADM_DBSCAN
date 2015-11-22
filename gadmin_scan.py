@@ -2,18 +2,25 @@ import settings as s
 import utils
 import xform
 import numpy as np
-from sklearn.cluster import DBSCAN
-from sklearn import metrics
-from sklearn.datasets.samples_generator import make_blobs
 from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import DBSCAN
 
 DEBUG = s.DEBUG
+
+"""
+Uses DBSCAN to extract clusters (called Zones of Analysis) 
+from a set of geocoded locations (read in from a CSV file).
+
+This version uses a conformal mapping approach to map spherical lat,lng 
+coordinates on a Cartesian Plane. This allows use of sklearn's out-of-the-box 
+distance calculation functions.
+
+TODO - PEP8-style documentation.
+"""
 
 ##############################################################################
 # Load in data
 poi_set = utils.import_measures(s.DATA_FILE)
-
-
 
 ##############################################################################
 # Project and Transform
@@ -31,26 +38,16 @@ labels = db.labels_
 # Number of clusters in labels, ignoring noise if present.
 n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
 
-print('Estimated number of clusters: %d' % n_clusters_)
-print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))
-print("Completeness: %0.3f" % metrics.completeness_score(labels_true, labels))
-print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
-print("Adjusted Rand Index: %0.3f"
-      % metrics.adjusted_rand_score(labels_true, labels))
-print("Adjusted Mutual Information: %0.3f"
-      % metrics.adjusted_mutual_info_score(labels_true, labels))
-print("Silhouette Coefficient: %0.3f"
-      % metrics.silhouette_score(X, labels))
+##############################################################################
+# Print machine learning metrics
+utils.print_dbscan_metrics(X, n_clusters_, labels_true, labels)
 
+##############################################################################
 # TODO - Xform Back, compute zone size and centroid
 
-# TODO - Externalize This
-for zoa, poi in zip(labels, poi_set):
-    print "\nLocation:\t%s" % poi[s.NAME_KEY]
-    print "Address:\t%s" % poi[s.ADDR_KEY]
-    print "Coords:\t\t(%.4f, %.4f)" % (poi[s.LAT_KEY], poi[s.LNG_KEY])
-    print "ZOA ID:\t\t%d" % zoa
-
+##############################################################################
+# Output Results
+utils.output_results(labels, poi_set)
 
 ##############################################################################
 # TODO - Learn matplotlib better
