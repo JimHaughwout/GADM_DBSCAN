@@ -98,6 +98,3 @@ def cart_projection(poi_set):
         poi_projected.append(poi_cart_projection(poi, centroid))
 
     return poi_projected
-
-
-

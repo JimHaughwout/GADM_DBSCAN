@@ -124,17 +124,26 @@ def print_dbscan_metrics(X, n_clusters_, labels_true, labels):
           % metrics.silhouette_score(X, labels))
 
 
-def output_results(dbscan_labels, poi_dataset, mode='screen'):
+def output_results(dbscan_labels, n_clusters_, poi_dataset, 
+    screen=True, outfile=None):
     """
     Outputs results to screen or csv file
     """
-    if mode in ('screen', 'all'):
-            print "\nZOA Results"
-            print "="*80,
-
+    index_num = 0
     for zoa, poi in zip(dbscan_labels, poi_dataset):
-        if mode in ('screen', 'all'):
+        index_num += 1
+        if screen:
+            if index_num == 1:
+                print "\nZOA Results: %d POIs in %d ZOAs" % (len(dbscan_labels), 
+                    n_clusters_)
+                print "="*80,
             print "\nLocation:\t%s" % poi[s.NAME_KEY]
             print "Address:\t%s" % poi[s.ADDR_KEY]
             print "Coords:\t\t(%.4f, %.4f)" % (poi[s.LAT_KEY], poi[s.LNG_KEY])
-            print "ZOA ID:\t\t%d" % zoa
+            print "ZOA ID:\t\t%d" % zoa 
+
+        if outfile:
+            # Validate outfile name
+            assert isinstance (outfile, str), "Outfile name is not a string: %r" % name
+            if outfile[-4:] != '.csv': outfile += '.csv'
+            # Rest is TODO

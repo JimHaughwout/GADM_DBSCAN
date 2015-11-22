@@ -47,7 +47,8 @@ utils.print_dbscan_metrics(X, n_clusters_, labels_true, labels)
 
 ##############################################################################
 # Output Results
-utils.output_results(labels, poi_set)
+
+utils.output_results(labels, n_clusters_, poi_set)
 
 ##############################################################################
 # TODO - Learn matplotlib better
