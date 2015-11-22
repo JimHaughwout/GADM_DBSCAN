@@ -1,5 +1,5 @@
 DEBUG = False
-INPUT_FILE = "/Users/jim/DEV/gadm_scan/data/points_of_interest.csv"
+INPUT_FILE = "/Users/jim/DEV/GADM_DBSCAN/data/points_of_interest.csv"
 OUTPUT_FILE = "/Users/jim/Desktop/zoa_results.csv"
 
 DEFAULT_RADIUS = 0.5
