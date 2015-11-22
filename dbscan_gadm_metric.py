@@ -1,12 +1,12 @@
 import settings as s
 import utils
-import xform
+import gadm
+#import xform # For now
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN
 import matplotlib.pyplot as plt
 
-from sys import exit # FOR NOW
 
 DEBUG = s.DEBUG
 
@@ -15,8 +15,7 @@ Uses DBSCAN to extract clusters (called Zones of Analysis)
 from a set of geocoded Point of Interest locations (read in from a CSV file).
 
 This version uses a custom distance metric function that employs true 
-ellipsoid distance calculations (using Vicenty's formula). It adds an option
-to modify the Vicenty distance calculation based on GADM features.
+ellipsoid distance calculations (using Vincenty's formula). 
 
 TODO - PEP8-style documentation.
 """
@@ -28,15 +27,13 @@ poi_dataset = utils.import_poi_csv(s.INPUT_FILE)
 ##############################################################################
 # Project and Transform
 labels_true = np.array(utils.get_name_list(poi_dataset))
-# projected_X = np.array(xform.cart_projection(poi_dataset))
-X = StandardScaler().fit_transform(projected_X)
-
-
-exit(99)
+X = np.array(gadm.get_poi_coord_dataset(poi_dataset))
 
 ##############################################################################
 # Compute DBSCAN
-db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1).fit(X)
+
+db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,metric=lambda X, Y: gadm.geodist(X, Y)).fit(X)
+#db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1).fit(X)
 core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
 core_samples_mask[db.core_sample_indices_] = True
 labels = db.labels_

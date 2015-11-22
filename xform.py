@@ -8,19 +8,6 @@ from geopy.distance import vincenty
 DEBUG = s.DEBUG
 
 
-def get_name_list(poi_set):
-    """
-    Returns list of names of POIs in order of appearance in set
-    """
-    assert not isinstance(poi_set, basestring), 'POI set is not list or tuple'
-
-    poi_names = list()
-    for poi in poi_set:
-        poi_names.append(poi[s.NAME_KEY])
-
-    return(poi_names)
-
-
 def get_centroid(poi_set):
     """
     Returns centroid lat,lng pair from list or tuple of POI dictionaries
@@ -74,13 +61,6 @@ def poi_cart_projection(poi, centroid):
     y = vincenty((c_lat, c_lng), (poi_lat, c_lng)).km
     if c_lat > poi_lat: y *= -1.0
 
-    """
-    if DEBUG:
-        print "\nPOI:\t\t%s" % poi[s.NAME_KEY]
-        print "Coords:\t\t(%.4f, %.4f)" % (poi_lng, poi_lat)
-        print "Centroid:\t(%.4f, %.4f)" % (c_lng, c_lat)
-        print "Projects to:\t(%.4f, %4f)" % (x, y)
-    """
     return (x, y)
 
 
