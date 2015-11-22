@@ -12,11 +12,11 @@ DEBUG = s.DEBUG
 
 """
 Uses DBSCAN to extract clusters (called Zones of Analysis) 
-from a set of geocoded locations (read in from a CSV file).
+from a set of geocoded Point of Interest locations (read in from a CSV file).
 
-This version uses a conformal mapping approach to map spherical lat,lng 
-coordinates on a Cartesian Plane. This allows use of sklearn's out-of-the-box 
-distance calculation functions.
+This version uses a custom distance metric function that employs true 
+ellipsoid distance calculations (using Vicenty's formula). It adds an option
+to modify the Vicenty distance calculation based on GADM features.
 
 TODO - PEP8-style documentation.
 """
