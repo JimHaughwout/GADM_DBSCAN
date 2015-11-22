@@ -2,50 +2,20 @@ import settings as s
 import decimal
 from csv import DictReader, DictWriter, writer
 from sys import exit
-from geopy.distance import vincenty
 from sklearn import metrics
 
 
-def dist_calc(poi_1, poi_2, mode='simple'):
+def get_name_list(poi_set):
     """
-    TODO DOCS
+    Returns list of names of POIs in order of appearance in set
     """
-    # Ensure we actually have dicts with values needed
-    try:
-        point_1 = (poi_1[s.LAT_KEY], poi_1[s.LNG_KEY])
-        name_1 = poi_1[s.NAME_KEY]
-        nbhd_1 = poi_1[s.NBHD_KEY]
-        city_1 = poi_1[s.CITY_KEY]
-        point_2 = (poi_2[s.LAT_KEY], poi_2[s.LNG_KEY])
-        name_2 = poi_2[s.NAME_KEY]
-        nbhd_2 = poi_2[s.NBHD_KEY]
-        city_2 = poi_2[s.CITY_KEY]
-    except:
-        print "\nPassed invalid POIs"
-        print "POI 1:\n%r" % poi_1
-        print "POI 2:\n%r\n" % poi_2
-        exit(3)
+    assert not isinstance(poi_set, basestring), 'POI set is not list or tuple'
 
-    # Magic Numbery rules are to test was to use GADM features for distance
-    # For now we treat close points in a city as a penalty (due to traffic)
-    # But treat close points in the same Neighborhood as a bonus
-    # This gives us simple urbanization
-    # TODO real data science scalars or use open data like this 
-    # http://infinitemonkeycorps.net/projects/cityspeed/
-    multiplier = 1.0
-    if mode == 'gadm':
-        if city_1 == city_2:
-            multiplier *= 4.0
-        if nbhd_1 == nbhd_2:
-            multiplier *= 0.8
+    poi_names = list()
+    for poi in poi_set:
+        poi_names.append(poi[s.NAME_KEY])
 
-    distance = vincenty(point_1, point_2).km
-    
-    if s.DEBUG:
-        print "%s-%s\nDistance (km): %.3f\nMultiplier: %.2f\n" % (name_1, 
-            name_2, distance, multiplier)
-
-    return distance * multiplier
+    return(poi_names)
 
 
 def half_even(num_val, n_places=s.DEFAULT_ROUNDING):

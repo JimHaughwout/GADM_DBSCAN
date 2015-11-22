@@ -27,9 +27,12 @@ poi_dataset = utils.import_poi_csv(s.INPUT_FILE)
 
 ##############################################################################
 # Project and Transform
-labels_true = np.array(xform.get_name_list(poi_dataset))
-projected_X = np.array(xform.cart_projection(poi_dataset))
+labels_true = np.array(utils.get_name_list(poi_dataset))
+# projected_X = np.array(xform.cart_projection(poi_dataset))
 X = StandardScaler().fit_transform(projected_X)
+
+
+exit(99)
 
 ##############################################################################
 # Compute DBSCAN
