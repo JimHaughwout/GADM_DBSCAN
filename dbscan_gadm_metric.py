@@ -56,6 +56,8 @@ utils.output_results(poi_result_set, screen=True, outfile=s.OUTPUT_FILE)
 ##############################################################################
 # Plot result
 # As Lat,Lng is Y,X we need to transpose it
+print "\nPlotting Graph"
+print "="*80
 X_prime = gadm.lat_lng_tpose(X)
 
 # Black removed and is used for noise instead.

@@ -1,8 +1,8 @@
-DEBUG = False
-INPUT_FILE = "/Users/jim/DEV/GADM_DBSCAN/data/points_of_interest.csv"
-OUTPUT_FILE = "/Users/jim/Desktop/zoa_results.csv"
+DEBUG = True
+INPUT_FILE = "/Users/jhaughwout/DEV/GADM_DBSCAN/data/points_of_interest.csv"
+OUTPUT_FILE = "/Users/jhaughwout/Desktop/zoa_results.csv"
 
-DEFAULT_RADIUS = 0.5
+DEFAULT_RADIUS = 1.5
 DEFAULT_ROUNDING = 4
 
 LAT_KEY = 'lat'

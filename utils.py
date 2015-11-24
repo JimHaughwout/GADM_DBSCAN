@@ -124,3 +124,4 @@ def output_results(poi_result_set, screen=True, outfile=None):
             target = DictWriter(f, poi_result_set[0].keys())
             target.writeheader()
             target.writerows(poi_result_set)
+        print "\nWrote output to %s.\n" % outfile
