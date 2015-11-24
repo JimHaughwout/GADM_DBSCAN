@@ -2,11 +2,15 @@
 ZOA_SUMMARY_TO_SCREEN = True
 MATPLOT_ZOA_CLUSTERS = True
 
-DEBUG = True
+GADM_MODE = True
+
+DEBUG = False
 
 # Set parameters for clustering
 DEFAULT_RADIUS = 1.0
 DEFAULT_ROUNDING = 4
+LOCAL = 0.4
+X_TOWN = 2.0
 
 # Set these based on your input and output CSVs
 INPUT_FILE = "/Users/jhaughwout/DEV/GADM_DBSCAN/data/points_of_interest.csv"

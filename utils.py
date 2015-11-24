@@ -6,6 +6,7 @@ import numpy as np
 from sklearn import metrics
 import matplotlib.pyplot as plt
 
+DEBUG = s.DEBUG
 
 def get_name_list(poi_set):
     """
@@ -67,7 +68,7 @@ def import_poi_csv(source_csv, lat_col=s.LAT_KEY,
             poi_dataset.append(row)
             poi_count += 1
 
-        if s.DEBUG:
+        if DEBUG:
             print "Imported %d POIs successfully from %s" % (poi_count, source_csv)
 
         return poi_dataset
@@ -105,7 +106,7 @@ def add_zoas_to_poi_dataset(dbscan_labels, poi_dataset):
 
 def plot_results(labels, X, core_samples_mask):
     """
-    TODO
+    TODO docstring
     """
     print "\nPlotting Graph"
     print "="*80

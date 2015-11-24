@@ -1,39 +1,41 @@
 # dbscan_gadm
 Fun with DBSCAN algorithm and GADM-geocoded points of interest.
 
-The goal is to read in a set of coordinates (latitude and longitude), 
-geocode [Global Administrative Area](http://www.gadm.org/) features
-for these, then perform unsupervised learning to cluster these into 
+This reads in a data set of coordinates (latitude and longitude) along with 
+geocoded [Global Administrative Area](http://www.gadm.org/) features
+for these, then performs unsupervised learning to cluster these into 
 zones of interest based on geographic features using the 
-[Density-Based Spatial Clustering of Applications with Noise](https://en.wikipedia.org/wiki/DBSCAN) algorithm.
+[Density-Based Spatial Clustering of Applications with Noise](https://en.wikipedia.org/wiki/DBSCAN) 
+algorithm with a customized distance function.
 
-## Versions
-This repo currently includes two versions of the algorithm
+## Options
+Currently the program defines options in a [`settings.py`](https://github.com/JimHaughwout/gadm_scan/blob/master/settings.py) file:
 
-#### DBSCAN With Conformal Mapping
-This version uses a conformal mapping approach to map ellipsoid lat,lng 
-coordinates on a Cartesian Plane. This allows use of sklearn's out-of-the-box 
-distance calculation functions. It also produces try X-Y coordinates for
-display via `matplotlib`
+#### General Settings
+Setting | Description | Values
+----------------|-------------|-------
+`INPUT_FILE` | Source data file of coordinates | See below
+`OUTPUT_FILE` | Output data file name | Qualified filename with path
+`ZOA_SUMMARY_TO_SCREEN` | Print ZOA summary to screen | `True`, `False`
+`MATPLOT_ZOA_CLUSTERS` | Use `matplotlib` to graph clusters | `True`, `False`
+`GADM_MODE` | Use GADM features to modify Vicenty distance. See below. | `True`, `False`
+`DEFAULT_RADIUS` | Default ZOA radius for DBSCAN epsilon, in km | `1.0`
+`DEFAULT_ROUNDING` | Default rounding in decimal places, for GPS coordinates. | `4`
+`LOCAL` | Adjustment factor for coordinates in same  neighborhood* | `0.4`
+`X_TOWN` | Adjustment factor for coordinates in same city* | `2.0`
 
-###### Usage
-Create your own POI file or use the [sample](https://github.com/JimHaughwout/gadm_scan/blob/master/data/points_of_interest.csv) 
-provided in the `/data` folder. Update [`settings.py`](https://github.com/JimHaughwout/gadm_scan/blob/master/settings.py) then:
-```sh
-$ python dbscan_conformal.py
-```
+*When Adjustment Factor is > 1 it is a penalty (<1 is a bonus). Both are combined.
+For example, we default 2x as penalty for cross-town transit but scale this back
+60% (to 1.2) if both points are in the same neighborhood.
 
-#### DBSCAN With Vincenty Distance Metric
-This version uses a custom distance metric function that employs true 
-ellipsoid distance calculations (using Vincenty's formula). 
+#### Specific CSV File Settings
+TODO. Sample is [here]](https://github.com/JimHaughwout/gadm_scan/blob/master/data/points_of_interest.csv) 
 
-###### Usage
-Create your own POI file or use the [sample](https://github.com/JimHaughwout/gadm_scan/blob/master/data/points_of_interest.csv) 
-provided in the `/data` folder. Update [`settings.py`](https://github.com/JimHaughwout/gadm_scan/blob/master/settings.py) then:
+#### Usage
+'git clone` and run from the command line:
 ```sh
 $ python dbscan_gadm_metric.py
 ```
 
-###### What's Next
-The desire is to modify the metric calculation to employ GADM features to
-change the distance calcultion (i.e., leverage urbanization vs rural features).
+## Note On Custom Calculation
+TODO about replacement

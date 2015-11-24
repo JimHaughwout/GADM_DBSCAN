@@ -13,6 +13,8 @@ def lat_lng_tpose(X):
     so we can plot correctly as [[X, Y]] values
     """
     s = len(X)
+    assert s >= 1, 'lat_lng_tpose - Passed zero length XL %r' % X
+
     lngs = X[:,1] # X values
     lats = X[:,0] # Y values
     x = np.reshape(lngs, (s, 1))
@@ -23,30 +25,7 @@ def lat_lng_tpose(X):
     return X_prime
 
 
-def build_gadm_X(poi_dataset):
-    """
-    TODO
-    """
-    assert not isinstance(poi_dataset, basestring), 'POI dataset is not list or tuple'
-
-    X_list = list()
-
-    for poi in poi_dataset:
-        try:
-            lat = poi[s.LAT_KEY]
-            lng = poi[s.LNG_KEY]
-            city = poi[s.CITY_KEY]
-            nbhd = poi[s.NBHD_KEY]
-        except:
-            print "\nget_poi_coord_dataset - Invalid POI: %r" % poi
-            exit(20)
-        
-        X_list.append((lat, lng, city, nbhd))
-
-    return poi_coords
-
-
-def get_poi_coord_dataset(poi_dataset):
+def get_poi_coord(poi_dataset):
     """
     Extracts list of lat,lng coordinates from list of POI dictionaries
     """
@@ -67,52 +46,79 @@ def get_poi_coord_dataset(poi_dataset):
     return poi_coords
 
 
-def geodist(p1, p2):
+def get_poi_coord_with_idx(poi_dataset):
     """
-    TODO
+    Extracts coord set and appends rest 
     """
-    distance_km = vincenty(p1, p2).km
+    assert not isinstance(poi_dataset, basestring), 'POI dataset is not list or tuple'
+
+    poi_coords = list()
+
+    idx = 0
+    for poi in poi_dataset:
+        try:
+            poi_lat = poi[s.LAT_KEY]
+            poi_lng = poi[s.LNG_KEY]
+        except:
+            print "\nget_poi_coord_dataset - Invalid POI: %r" % poi
+            exit(20)
+        
+        poi_coords.append((poi_lat, poi_lng, idx))
+        idx += 1
+
+    return poi_coords
+
+ 
+def geodist_v(p1, p2):
+    """TODO documentation"""
+    print "%s - %s" % (p1, p2)
+
+    base_distance = vincenty(p1, p2).km
 
     if DEBUG: print "Distance %s - %s: %.4f km" % (p1, p2, distance_km)
 
-    return distance_km
+    return base_distance
 
-"""
-def dist_calc(poi_1, poi_2, mode='simple'):
-    # Ensure we actually have dicts with values needed
+
+def extract_features(x):
+    """
+    x is a slice of the X numpy array
+    """
     try:
-        point_1 = (poi_1[s.LAT_KEY], poi_1[s.LNG_KEY])
-        name_1 = poi_1[s.NAME_KEY]
-        nbhd_1 = poi_1[s.NBHD_KEY]
-        city_1 = poi_1[s.CITY_KEY]
-        point_2 = (poi_2[s.LAT_KEY], poi_2[s.LNG_KEY])
-        name_2 = poi_2[s.NAME_KEY]
-        nbhd_2 = poi_2[s.NBHD_KEY]
-        city_2 = poi_2[s.CITY_KEY]
+        lat = utils.half_even(x[0], s.DEFAULT_ROUNDING)
+        lng = utils.half_even(x[1], s.DEFAULT_ROUNDING)
+        idx = int(x[2])
     except:
-        print "\nPassed invalid POIs"
-        print "POI 1:\n%r" % poi_1
-        print "POI 2:\n%r\n" % poi_2
-        exit(3)
+        print "extract_features: %r is not valid" % x
+        exit(40)
 
-    # Magic Numbery rules are to test was to use GADM features for distance
-    # For now we treat close points in a city as a penalty (due to traffic)
-    # But treat close points in the same Neighborhood as a bonus
-    # This gives us simple urbanization
-    # TODO real data science scalars or use open data like this 
-    # http://infinitemonkeycorps.net/projects/cityspeed/
-    multiplier = 1.0
-    if mode == 'gadm':
-        if city_1 == city_2:
-            multiplier *= 4.0
-        if nbhd_1 == nbhd_2:
-            multiplier *= 0.8
+    return (lat, lng), idx
 
-    distance = vincenty(point_1, point_2).km
-    
-    if s.DEBUG:
-        print "%s-%s\nDistance (km): %.3f\nMultiplier: %.2f\n" % (name_1, 
-            name_2, distance, multiplier)
 
-    return distance * multiplier
-"""
+def geodist_gadm(x, y, poi_dataset):
+    """TODO documentation"""
+    try:
+        p1, idx1 = extract_features(x) # (lat,lng) & index in poi_dataset
+        n1 = poi_dataset[idx1][s.NBHD_KEY] # neighborhood based on index
+        c1 = poi_dataset[idx1][s.CITY_KEY] # neighborhood based on index
+    except:
+        print "geodist2 - x is not valid: %r" % x
+
+    try:
+        p2, idx2 = extract_features(y) # (lat,lng) & index in poi_dataset
+        n2 = poi_dataset[idx2][s.NBHD_KEY] # neighborhood based on index
+        c2 = poi_dataset[idx2][s.CITY_KEY] # neighborhood based on index
+    except:
+        print "geodist2 - y is not valid: %r" % x
+
+    base_distance = vincenty(p1, p2).km
+    scored_distance = base_distance
+
+    if c1 == c2: scored_distance *= s.X_TOWN
+    if n1 == n2: scored_distance *= s.LOCAL
+
+    if DEBUG and idx1 != idx2: 
+        print "Distance %s (%s, %s) - %s (%s, %s): %.4f km (as %.4f)" % (p1, n1,
+         c1, p2, n2, c2, base_distance, scored_distance)
+
+    return scored_distance
