@@ -29,7 +29,7 @@ For example, we default 2x as penalty for cross-town transit but scale this back
 60% (to 1.2) if both points are in the same neighborhood.
 
 #### Specific CSV File Settings
-TODO. Sample is [here]](https://github.com/JimHaughwout/gadm_scan/blob/master/data/points_of_interest.csv) 
+TODO. Sample is [here](https://github.com/JimHaughwout/gadm_scan/blob/master/data/points_of_interest.csv) 
 
 #### Usage
 'git clone` and run from the command line:
