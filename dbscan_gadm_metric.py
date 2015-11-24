@@ -1,12 +1,9 @@
 import settings as s
 import utils
 import gadm
-#import xform # For now
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN
-import matplotlib.pyplot as plt
-
 
 DEBUG = s.DEBUG
 
@@ -51,36 +48,11 @@ poi_result_set = utils.add_zoas_to_poi_dataset(labels, poi_dataset)
 
 ##############################################################################
 # Output Results
-utils.output_results(poi_result_set, screen=True, outfile=s.OUTPUT_FILE)
+utils.output_results(poi_result_set,
+ screen=s.ZOA_SUMMARY_TO_SCREEN, outfile=s.OUTPUT_FILE)
 
 ##############################################################################
 # Plot result
-# As Lat,Lng is Y,X we need to transpose it
-print "\nPlotting Graph"
-print "="*80
-X_prime = gadm.lat_lng_tpose(X)
-
-# Black removed and is used for noise instead.
-unique_labels = set(labels)
-colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
-
-fig = plt.figure()
-ax = fig.add_subplot(111)
-
-for k, col in zip(unique_labels, colors):
-    if k == -1:
-        # Black used for noise.
-        col = 'k'
-
-    class_member_mask = (labels == k)
-
-    xy = X_prime[class_member_mask & core_samples_mask]
-    plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
-             markeredgecolor='k', markersize=14)
-
-    xy = X_prime[class_member_mask & ~core_samples_mask]
-    plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
-             markeredgecolor='k', markersize=6)
-
-plt.title('Estimated number of clusters: %d' % n_clusters_)
-plt.show()
+if s.MATPLOT_ZOA_CLUSTERS:
+    X_prime = gadm.lat_lng_tpose(X) # As Lat,Lng is Y,X we need to transpose it
+    utils.plot_results(labels, X_prime, core_samples_mask)

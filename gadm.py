@@ -73,15 +73,12 @@ def geodist(p1, p2):
     """
     distance_km = vincenty(p1, p2).km
 
-    #if DEBUG: print "Distance %s - %s: %.4f km" % (p1, p2, distance_km)
+    if DEBUG: print "Distance %s - %s: %.4f km" % (p1, p2, distance_km)
 
     return distance_km
 
-
+"""
 def dist_calc(poi_1, poi_2, mode='simple'):
-    """
-    TODO DOCS
-    """
     # Ensure we actually have dicts with values needed
     try:
         point_1 = (poi_1[s.LAT_KEY], poi_1[s.LNG_KEY])
@@ -118,3 +115,4 @@ def dist_calc(poi_1, poi_2, mode='simple'):
             name_2, distance, multiplier)
 
     return distance * multiplier
+"""

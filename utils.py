@@ -2,7 +2,9 @@ import settings as s
 import decimal
 from csv import DictReader, DictWriter, writer
 from sys import exit
+import numpy as np
 from sklearn import metrics
+import matplotlib.pyplot as plt
 
 
 def get_name_list(poi_set):
@@ -101,6 +103,39 @@ def add_zoas_to_poi_dataset(dbscan_labels, poi_dataset):
     return poi_dataset_with_zoas
 
 
+def plot_results(labels, X, core_samples_mask):
+    """
+    TODO
+    """
+    print "\nPlotting Graph"
+    print "="*80
+    
+    # Black removed and is used for noise instead.
+    unique_labels = set(labels)
+    colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    for k, col in zip(unique_labels, colors):
+        if k == -1:
+            # Black used for noise.
+            col = 'k'
+
+        class_member_mask = (labels == k)
+
+        xy = X[class_member_mask & core_samples_mask]
+        plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
+                 markeredgecolor='k', markersize=14)
+
+        xy = X[class_member_mask & ~core_samples_mask]
+        plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
+                 markeredgecolor='k', markersize=6)
+
+    plt.title('Estimated number of clusters: %d' % len(unique_labels))
+    plt.show()
+
+
 def output_results(poi_result_set, screen=True, outfile=None):
     """
     Outputs results to screen or csv file
@@ -120,7 +155,7 @@ def output_results(poi_result_set, screen=True, outfile=None):
     if outfile:
         assert isinstance (outfile, str), "Outfile name is not a string: %r" % name
         if outfile[-4:] != '.csv': outfile += '.csv'
-        with open(outfile, 'wb') as f:  # Just use 'w' mode in 3.x
+        with open(outfile, 'wb') as f:
             target = DictWriter(f, poi_result_set[0].keys())
             target.writeheader()
             target.writerows(poi_result_set)
