@@ -1,9 +1,16 @@
-DEBUG = False
-INPUT_FILE = "/Users/jim/DEV/GADM_DBSCAN/data/points_of_interest.csv"
-OUTPUT_FILE = "/Users/jim/Desktop/zoa_results.csv"
+# Parameters for display and debug
+ZOA_SUMMARY_TO_SCREEN = True
+MATPLOT_ZOA_CLUSTERS = True
 
-DEFAULT_RADIUS = 0.5
+DEBUG = True
+
+# Set parameters for clustering
+DEFAULT_RADIUS = 1.0
 DEFAULT_ROUNDING = 4
+
+# Set these based on your input and output CSVs
+INPUT_FILE = "/Users/jhaughwout/DEV/GADM_DBSCAN/data/points_of_interest.csv"
+OUTPUT_FILE = "/Users/jhaughwout/Desktop/zoa_results.csv"
 
 LAT_KEY = 'lat'
 LNG_KEY = 'lng'
