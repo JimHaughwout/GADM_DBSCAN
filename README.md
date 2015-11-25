@@ -18,7 +18,7 @@ Setting | Description | Example Values
 `OUTPUT_FILE` | Output data file name | Qualified filename with path
 `ZOA_SUMMARY_TO_SCREEN` | Print ZOA summary to screen | `True`, `False`
 `MATPLOT_ZOA_CLUSTERS` | Use `matplotlib` to graph clusters | `True`, `False`
-`MODE` | Custom distance metric formulat to use. See below. | See below
+`MODE` | Custom distance metric formula to use. See below. | See below
 `DEFAULT_RADIUS` | Default ZOA radius for DBSCAN epsilon, in km | `1.0`
 `DEFAULT_ROUNDING` | Default rounding in decimal places, for GPS coordinates. | `4`
 `LOCAL`* | Adjustment factor for coordinates in same  neighborhood | `0.4`
@@ -34,10 +34,10 @@ You can use one of three modes to calculation the distance between points for
 DBSCAN clustering
 
 ##### `vicenty-basic` Mode
-Custom distance metric using [Vincenty's Forumla](https://en.wikipedia.org/wiki/Vincenty%27s_formulae).
+Custom distance metric using [Vincenty's Formula](https://en.wikipedia.org/wiki/Vincenty%27s_formulae).
 
 ##### `vicenty-gadm` Mode
-Custom distance metric that combines Vincenty's Forumla with GADM features
+Custom distance metric that combines Vincenty's Formula with GADM features
 to calculate a scored distance (in km). The metric starts with a base
 Vincenty's Forumal distance calculation, then modifies this based on
 whether the two points are in the same city and or city neighborhood.
