@@ -1,6 +1,6 @@
 import settings as s
 import decimal
-from csv import DictReader, DictWriter, writer
+from csv import DictReader, DictWriter
 from sys import exit
 import numpy as np
 from sklearn import metrics
@@ -8,14 +8,14 @@ import matplotlib.pyplot as plt
 
 DEBUG = s.DEBUG
 
-def get_name_list(poi_set):
+def get_name_list(poi_dataset):
     """
-    Returns list of names of POIs in order of appearance in set
+    Returns list of names of POIs in order of appearance in dataset
     """
-    assert not isinstance(poi_set, basestring), 'POI set is not list or tuple'
+    assert not isinstance(poi_dataset, basestring), 'POI dataset is not list or tuple'
 
     poi_names = list()
-    for poi in poi_set:
+    for poi in poi_dataset:
         poi_names.append(poi[s.NAME_KEY])
 
     return(poi_names)
@@ -76,7 +76,7 @@ def import_poi_csv(source_csv, lat_col=s.LAT_KEY,
 
 def print_dbscan_metrics(X, n_clusters_, labels_true, labels):
     """
-    Print metrics on DBSCAN to screen.
+    Print sklearn metrics on DBSCAN to screen.
     """
     print "\nModel Performance and Metrics"
     print "="*80
@@ -94,7 +94,8 @@ def print_dbscan_metrics(X, n_clusters_, labels_true, labels):
 
 def add_zoas_to_poi_dataset(dbscan_labels, poi_dataset):
     """
-    Modifies a list of POI dictionaries to add ZOAs from DBSCAN
+    Modifies a list of POI dictionaries to add ZOA values obtained via DBSCAN.
+    Returns a single unified dictionary for easy iteration
     """
     poi_dataset_with_zoas = list()
     for zoa, poi in zip(dbscan_labels, poi_dataset):
@@ -106,7 +107,10 @@ def add_zoas_to_poi_dataset(dbscan_labels, poi_dataset):
 
 def plot_results(labels, X, core_samples_mask):
     """
-    TODO docstring
+    Generates a matplotlib window of cluster. 
+    POIs that make up clusters have large, colored circles
+    Color is driven by Spectral distribution of colors across number of clusters
+    POIs that are noise (i.e, outside clusters) are small black dots.
     """
     print "\nPlotting Graph"
     print "="*80
@@ -139,7 +143,9 @@ def plot_results(labels, X, core_samples_mask):
 
 def output_results(poi_result_set, screen=True, outfile=None):
     """
-    Outputs results to screen or csv file
+    Outputs unified DBSCAN results to screen or csv file.
+    The screen only shows major data elements. The CSV file has the 
+    complete dictionary (i.e., base dictionay plus ZOA attributes for each POI)
     """
     assert not isinstance(poi_result_set, basestring), 'POI result set is not list or tuple'
 
