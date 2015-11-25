@@ -5,10 +5,6 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN
 
-from sys import exit # For now
-
-DEBUG = s.DEBUG
-
 """
 This reads in a data set of coordinates (latitude and longitude) along with 
 geocoded features for these, then performs unsupervised learning to cluster 
@@ -27,12 +23,20 @@ poi_dataset = utils.import_poi_csv(s.INPUT_FILE)
 # Transform and Compute DBSCAN
 labels_true = np.array(utils.get_name_list(poi_dataset))
 
-if s.GADM_MODE:
-    X = np.array(gadm.get_poi_coord_with_idx(poi_dataset))
-    db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,metric=lambda X, Y: gadm.geodist_gadm(X, Y, poi_dataset)).fit(X)
+if s.MODE == 'proxy':
+    X = gadm.get_proxy_X(poi_dataset)
+    db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,
+     metric=lambda X, Y: gadm.geodist_proxy(X, Y, poi_dataset)).fit(X)
+
+elif s.MODE == 'vincenty-gadm':
+    X = gadm.get_vincenty_gadm_X(poi_dataset)
+    db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,
+     metric=lambda X, Y: gadm.geodist_gadm(X, Y, poi_dataset)).fit(X)
+
 else:
-    X = np.array(gadm.get_poi_coord(poi_dataset))
-    db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,metric=lambda X, Y: gadm.geodist_v(X, Y)).fit(X)
+    X = gadm.get_vincenty_basic_X(poi_dataset)
+    db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,
+     metric=lambda X, Y: gadm.geodist_v(X, Y)).fit(X)
 
 core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
 core_samples_mask[db.core_sample_indices_] = True
@@ -55,7 +59,10 @@ utils.output_results(poi_result_set,
  screen=s.ZOA_SUMMARY_TO_SCREEN, outfile=s.OUTPUT_FILE)
 
 ##############################################################################
-# Plot result
+# Plot result using X_prime a transpose of [[lat, lng]] to [[x=lng, y=lat]]
+# If mode is proxy, lookup coordinates
+# X_pr
 if s.MATPLOT_ZOA_CLUSTERS:
-    X_prime = gadm.lat_lng_tpose(X) # As Lat,Lng is Y,X we need to transpose it
+    if s.MODE == 'proxy': X_prime = gadm.lat_lng_tpose2(X, poi_dataset)
+    else: X_prime = gadm.lat_lng_tpose(X) 
     utils.plot_results(labels, X_prime, core_samples_mask)
