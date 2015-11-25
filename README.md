@@ -72,7 +72,7 @@ Key | CSV Column name of | Nullable in CSV?
 `LAT_KEY` | Latitude (in decimal degrees) | NO
 `LNG_KEY` | Longitude (in decimal degrees) | NO
 `ADDR_KEY` | Single-line Address (e.g., "77 Massachussetts Avenue, Cambridge, MA 02139") | Yes
-`NBHD_KEY` | GADM Neighborhood Name| Yes for `vicenty-basic`
+`NBHD_KEY` | GADM Neighborhood Name| Yes for `vincenty-basic`
 `CITY_KEY` | GADM City Name | Yes
 `NAME_KEY` | POI Location Name | NO
 `ZOA_KEY` | ZOA label you wish for output | N/A*
