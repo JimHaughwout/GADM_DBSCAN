@@ -7,8 +7,6 @@ from sklearn.cluster import DBSCAN
 
 from sys import exit # For now
 
-DEBUG = s.DEBUG
-
 """
 This reads in a data set of coordinates (latitude and longitude) along with 
 geocoded features for these, then performs unsupervised learning to cluster 
@@ -28,8 +26,11 @@ poi_dataset = utils.import_poi_csv(s.INPUT_FILE)
 labels_true = np.array(utils.get_name_list(poi_dataset))
 
 if s.GADM_MODE:
-    X = np.array(gadm.get_poi_coord_with_idx(poi_dataset))
-    db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,metric=lambda X, Y: gadm.geodist_gadm(X, Y, poi_dataset)).fit(X)
+    X = np.array(gadm.get_proxy_X(poi_dataset))
+    db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1, metric=lambda X, Y: gadm.geodist_proxy(X, Y, poi_dataset)).fit(X)
+    #X = np.array(gadm.get_poi_coord_with_idx(poi_dataset))
+    #db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,metric=lambda X, Y: gadm.geodist_gadm(X, Y, poi_dataset)).fit(X)
+
 else:
     X = np.array(gadm.get_poi_coord(poi_dataset))
     db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,metric=lambda X, Y: gadm.geodist_v(X, Y)).fit(X)
@@ -57,5 +58,6 @@ utils.output_results(poi_result_set,
 ##############################################################################
 # Plot result
 if s.MATPLOT_ZOA_CLUSTERS:
-    X_prime = gadm.lat_lng_tpose(X) # As Lat,Lng is Y,X we need to transpose it
+    X_prime = gadm.lat_lng_tpose2(X, poi_dataset)
+    #X_prime = gadm.lat_lng_tpose(X) # As Lat,Lng is Y,X we need to transpose it
     utils.plot_results(labels, X_prime, core_samples_mask)

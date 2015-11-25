@@ -4,7 +4,7 @@ MATPLOT_ZOA_CLUSTERS = True
 
 GADM_MODE = True
 
-DEBUG = False
+DEBUG = True
 
 # Set parameters for clustering
 DEFAULT_RADIUS = 1.0
