@@ -46,7 +46,7 @@ This is just one (illustrative) method of using GADM features to modify
 distance. It is "magic numbery" for simplicity. In real-life one would 
 derive values for GADM feature weights -- or use the full proxy method.
 
-##### proxy Mode
+##### `proxy` Mode
 Custom distance metric that uses a simple proxy ID to fetch attributes
 from an external data set (for illustrative simplicity in this case, 
 the passed POI dataset)
