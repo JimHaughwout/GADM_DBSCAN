@@ -1,0 +1,73 @@
+RESULTS FOR SAMPLE DATA SET USING VICENTY-BASIC DISTANCE MODE
+
+Model Performance and Metrics
+================================================================================
+Estimated number of clusters: 5
+Homogeneity: 0.676
+Completeness: 1.000
+V-measure: 0.807
+Adjusted Rand Index: 0.000
+Adjusted Mutual Information: 0.000
+Silhouette Coefficient: 0.930
+
+ZOAs by POI
+================================================================================ 
+Location:   The Capital Wheel
+Address:    116 Waterfront St, Oxon Hill, MD 20745, USA
+Neighborhood:   Oxon Hill
+Coordinates:    38.7857, -77.0152
+ZOA ID:     0
+
+Location:   The Pad
+Address:    122 Queen St, Alexandria, VA 22314, USA
+Neighborhood:   Old Town
+Coordinates:    38.8064, -77.0407
+ZOA ID:     1
+
+Location:   Torpedo Factory
+Address:    105 S Union St, Alexandria, VA 22314, USA
+Neighborhood:   Old Town
+Coordinates:    38.8039, -77.0405
+ZOA ID:     1
+
+Location:   The Lair
+Address:    3601 Eisenhower Ave, Alexandria, VA 22304, USA
+Neighborhood:   Eisenhower West
+Coordinates:    38.8032, -77.0878
+ZOA ID:     2
+
+Location:   Marriott Courtyard ALX
+Address:    200 Bluestone Rd, Alexandria, VA 22304, USA
+Neighborhood:   Eisenhower West
+Coordinates:    38.8043, -77.0915
+ZOA ID:     2
+
+Location:   Westin Balston
+Address:    801 N Glebe Rd, Arlington, VA 22203, USA
+Neighborhood:   Virginia Square
+Coordinates:    38.8807, -77.1142
+ZOA ID:     3
+
+Location:   GMU Policy Intl Affairs
+Address:    4401 15th St N, Arlington, VA 22207, USA
+Neighborhood:   Waverly Hills
+Coordinates:    38.8890, -77.1144
+ZOA ID:     3
+
+Location:   FDIC
+Address:    550 17th St NW, Washington, DC 20429, USA
+Neighborhood:   Northwest Washington
+Coordinates:    38.8971, -77.0402
+ZOA ID:     4
+
+Location:   Eisenhower Exec Office Bldg
+Address:    1650 Pennsylvania Ave NW, Washington, DC 20504, USA
+Neighborhood:   Northwest Washington
+Coordinates:    38.8980, -77.0389
+ZOA ID:     4
+
+Location:   St. Regis - Washington DC
+Address:    923 16th St NW, Washington, DC 20006, USA
+Neighborhood:   Downtown
+Coordinates:    38.9021, -77.0361
+ZOA ID:     4

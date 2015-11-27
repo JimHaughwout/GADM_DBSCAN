@@ -50,6 +50,9 @@ to get true driving times between each X and Y).
 
 Set `MODE = 'proxy'` in `settings.py`.
 
+#### Sample Results
+TODO
+
 ## Options
 Currently the program defines options in a [`settings.py`](https://github.com/JimHaughwout/gadm_scan/blob/master/settings.py) file:
 
@@ -73,8 +76,8 @@ For example, we default 2x as penalty for cross-town (`X_TOWN = 2.0`) transit bu
 
 #### CSV File Settings
 The script can take in any CSV file of POIs, as long as the file contains
-the requisite data points. A [sample](https://github.com/JimHaughwout/gadm_scan/blob/master/data/points_of_interest.csv) is provided
-in the `/data` folder.
+the requisite data points. A [sample](https://github.com/JimHaughwout/gadm_scan/blob/master/sample-data/points_of_interest.csv) is provided
+in the `/sample-data` folder.
 
 If you use your own file, simply set column names in the dictionary KEY values
 in the [`settings.py`](https://github.com/JimHaughwout/gadm_scan/blob/master/settings.py) 
