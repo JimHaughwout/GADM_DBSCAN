@@ -19,10 +19,12 @@ $ python dbscan_gadm_metric.py
 You can use one of three modes to calculation the distance between points for
 DBSCAN clustering
 
-#### `vincenty-basic` Mode
+#### Vincenty Basic
 Custom distance metric using [Vincenty's Formula](https://en.wikipedia.org/wiki/Vincenty%27s_formulae).
 
-#### `vincenty-gadm` Mode
+Set `MODE = 'vincenty-basic'` in `settings.py`.
+
+#### Vincenty+GADM Features
 Custom distance metric that combines Vincenty's Formula with GADM features
 to calculate a scored distance (in km). The metric starts with a base
 Vincenty's Forumal distance calculation, then modifies this based on
@@ -32,10 +34,12 @@ This is just one illustrative method of using GADM features to modify
 distance. It is "magic numbery" for simplicity. In real-life one would 
 derive values for GADM feature weights -- or use the full proxy method.
 
-#### `proxy` Mode
+Set `MODE = 'vincenty-gadm'` in `settings.py`.
+
+#### Proxy Distance Calculation
 Custom distance metric that uses a simple proxy ID to fetch attributes
 from an external data set (for illustrative simplicity in this case, 
-the passed POI dataset)
+we use the passed POI dataset)
 
 >While this Proxy approach replicates the same distance formula
 of _Vincenty-plus-GADM_ it could be modified to support **ANY** distance formula.
@@ -43,6 +47,8 @@ For example, rather that using GADM features one could instead extract
 a key or GUID used to look up a whole array of features used for a custom
 distance calculation (even to make a REST call to a route management system
 to get true driving times between each X and Y). 
+
+Set `MODE = 'proxy'` in `settings.py`.
 
 ## Options
 Currently the program defines options in a [`settings.py`](https://github.com/JimHaughwout/gadm_scan/blob/master/settings.py) file:
@@ -54,16 +60,16 @@ Setting | Description | Example Values
 `OUTPUT_FILE` | Output data file name | Qualified filename with path
 `ZOA_SUMMARY_TO_SCREEN` | Print ZOA summary to screen | `True`, `False`
 `MATPLOT_ZOA_CLUSTERS` | Use `matplotlib` to graph clusters | `True`, `False`
-`MODE` | Custom distance metric formula to use. See below. | See below
+`MODE` | Custom distance metric formula to use. See below. | See above
 `DEFAULT_RADIUS` | Default ZOA radius for DBSCAN epsilon, in km | `1.0`
 `DEFAULT_ROUNDING` | Default rounding in decimal places, for GPS coordinates. | `4`
 `LOCAL`* | Adjustment factor for coordinates in same  neighborhood | `0.4`
 `X_TOWN`* | Adjustment factor for coordinates in same city | `2.0`
 
-*These are settings are ignored in `vincenty-basic` mode (see below)
-When Adjustment Factor is > 1 it is a penalty (<1 is a bonus). Both are combined.
-For example, we default 2x as penalty for cross-town transit but scale this back
-60% (to 1.2) if both points are in the same neighborhood.
+*These are settings are ignored in `vincenty-basic` mode.
+When Adjustment Factor is > 1, it is a penalty (when < 1, it is a bonus). Both are combined.
+For example, we default 2x as penalty for cross-town (`X_TOWN = 2.0`) transit but scale this back
+60% to 1.2 (`2.0 * 0.4`) if both points are in the same neighborhood (`LOCAL = 0.4`).
 
 #### CSV File Settings
 The script can take in any CSV file of POIs, as long as the file contains
