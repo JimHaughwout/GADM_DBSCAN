@@ -99,8 +99,6 @@ def geodist_v(p1, p2):
     """
     Custom distance metric using Vincenty's Forumla. Returns results in km.
     """
-    print "%s - %s" % (p1, p2)
-
     distance = vincenty(p1, p2).km
 
     if DEBUG: print "Distance %s - %s: %.4f km" % (p1, p2, distance)
@@ -170,8 +168,6 @@ def extract_features_from_proxy(x, poi_dataset):
     x is a slice of the X numpy array
     """
     assert not isinstance(poi_dataset, basestring), 'POI dataset is not list or tuple'
-
-    #print poi_id
 
     try:
         poi_id = int(x[0])

@@ -98,6 +98,7 @@ def add_zoas_to_poi_dataset(dbscan_labels, poi_dataset):
     Returns a single unified dictionary for easy iteration
     """
     poi_dataset_with_zoas = list()
+
     for zoa, poi in zip(dbscan_labels, poi_dataset):
         poi[s.ZOA_KEY] = zoa
         poi_dataset_with_zoas.append(poi)
@@ -112,7 +113,7 @@ def plot_results(labels, X, core_samples_mask):
     Color is driven by Spectral distribution of colors across number of clusters
     POIs that are noise (i.e, outside clusters) are small black dots.
     """
-    print "\nPlotting Graph"
+    print "\nPlotting Results with MatPlotLib"
     print "="*80
     
     # Black removed and is used for noise instead.

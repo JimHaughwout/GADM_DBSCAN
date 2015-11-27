@@ -33,7 +33,7 @@ elif s.MODE == 'vincenty-gadm':
     db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,
      metric=lambda X, Y: gadm.geodist_gadm(X, Y, poi_dataset)).fit(X)
 
-else:
+else: # Default to basic-vincenty mode
     X = gadm.get_vincenty_basic_X(poi_dataset)
     db = DBSCAN(eps=s.DEFAULT_RADIUS, min_samples=1,
      metric=lambda X, Y: gadm.geodist_v(X, Y)).fit(X)

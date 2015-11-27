@@ -2,7 +2,7 @@
 ZOA_SUMMARY_TO_SCREEN = True
 MATPLOT_ZOA_CLUSTERS = True
 
-#MODE = 'basic-vicenty'
+#MODE = 'basic-vincenty'
 MODE = 'vincenty-gadm'  
 #MODE = 'proxy'
 
