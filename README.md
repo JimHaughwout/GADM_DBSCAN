@@ -51,7 +51,55 @@ to get true driving times between each X and Y).
 Set `MODE = 'proxy'` in `settings.py`.
 
 #### Sample Results
-TODO
+All Images
+![All Points](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/map_all.png)
+
+Vincenty Basic Does this:
+![V-basic](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/vicenty-basic.png)
+
+Let's try. This does X. It gives us five clusters. Here are the DBSCAN metrics:
+```
+RESULTS FOR SAMPLE DATA SET USING VICENTY-BASIC DISTANCE MODE
+
+Model Performance and Metrics
+================================================================================
+Estimated number of clusters: 5
+Homogeneity: 0.676
+Completeness: 1.000
+V-measure: 0.807
+Adjusted Rand Index: 0.000
+Adjusted Mutual Information: 0.000
+Silhouette Coefficient: 0.930
+```
+You can see the raw results [here](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/vincenty-basic_results.txt).
+Here is the cluster
+![V-GADM](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/vincenty-plus-gadm_matplotlib.png)
+
+It did 7, not 5. Here are the metrics:
+```
+Model Performance and Metrics
+================================================================================
+Estimated number of clusters: 7
+Homogeneity: 0.819
+Completeness: 1.000
+V-measure: 0.901
+Adjusted Rand Index: 0.000
+Adjusted Mutual Information: 0.000
+Silhouette Coefficient: 0.467
+```
+You can see the raw results [here](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/vincenty-plus-gadm_results.txt).
+
+What changed?...
+![Arlington](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/map_arlington.png)
+Correctly I-66
+
+And DC, going around the White House is lots of traffic:
+![DC Neighborhood](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/map_dc.png)
+
+However, when in same Neighborhood, got it write
+![By the Pad](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/map_old_town.png)
+
+
 
 ## Options
 Currently the program defines options in a [`settings.py`](https://github.com/JimHaughwout/gadm_scan/blob/master/settings.py) file:
