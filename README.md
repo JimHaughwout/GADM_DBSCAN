@@ -110,7 +110,7 @@ Adding GADM features split the three Washington POIs into two clusters (even tho
 ![DC Neighborhood](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-results/map_dc.png)
 Anyone who has driven around DC will tell you this makes sense also, as the *The White House* creates lots of detours.
 
-##### Intra-neighborhood Traffic
+###### Intra-neighborhood Traffic
 As expected, using GADM features kept points that are close together AND in the same intercity neighborhood together. Here is Old Town, Alexandria:
 ![By the Pad](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-results/map_old_town.png)
 
