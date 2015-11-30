@@ -130,7 +130,7 @@ Setting | Description | Example Values
 `LOCAL`* | Adjustment factor for coordinates in same  neighborhood | `0.8`
 `X_TOWN`* | Adjustment factor for coordinates in same city | `2.0`
 
-*These are settings are ignored in `vincenty-basic` mode. See **Sample Results** above for discussion of use of `LOCAL` and `X_TOWN` settings.
+*These are settings are ignored in `vincenty-basic` mode. See _Sample Results_ above for discussion of use of `LOCAL` and `X_TOWN` settings.
 
 #### CSV File Settings
 The script can take in any CSV file of POIs, as long as the file contains
