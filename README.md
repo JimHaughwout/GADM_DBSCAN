@@ -51,16 +51,16 @@ to get true driving times between each X and Y).
 Set `MODE = 'proxy'` in `settings.py`.
 
 #### Sample Results
-All Images
-![All Points](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/map_all.png)
+A [sample data file](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-data/points_of_interest.csv) of 10 points of interest is provided in the [/sample-data](https://github.com/JimHaughwout/GADM_DBSCAN/tree/master/sample-data) folder to illustrate the results of different DBSCAN distance calculations. These points were selected to show different clustering results based on whether or not GADM features are used.
 
-Vincenty Basic Does this:
-![V-basic](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/vicenty-basic.png)
+Here is a map of all 10 points:
+![All Points](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-results/map_all.png)
 
-Let's try. This does X. It gives us five clusters. Here are the DBSCAN metrics:
+##### Vincenty Basic
+When looking at the 10 points from a simple human "how would you cluster these?" perspective, it appears we have five clusters.
+This is exactly how the the *Vincenty Basic* distance formula clusters these (when set to allow clusters of 1+ points and to treat anything within a 1.0 km radius as candidates in the same cluster: 
+
 ```
-RESULTS FOR SAMPLE DATA SET USING VICENTY-BASIC DISTANCE MODE
-
 Model Performance and Metrics
 ================================================================================
 Estimated number of clusters: 5
@@ -71,11 +71,19 @@ Adjusted Rand Index: 0.000
 Adjusted Mutual Information: 0.000
 Silhouette Coefficient: 0.930
 ```
-You can see the raw results [here](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/vincenty-basic_results.txt).
-Here is the cluster
-![V-GADM](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/vincenty-plus-gadm_matplotlib.png)
+You can see the raw results [here](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-results/vincenty-basic_results.txt). A `matplotlib` view shows a Mercator projection of five separate clusters:
+![V-basic](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-results/vicenty-basic.png)
 
-It did 7, not 5. Here are the metrics:
+This appears to "make sense" from a common common sense POV.
+
+##### Adding GADM Features
+However, lets see what happens if we use Vincenty distance modified by GADM features to determine clusters. In this case we have
+applied two rules based on a very simplistic urban model:
+
+1. Urban travel is harder than non-urban. If two points are in the same city, and the city is large enought to have distinct GADM neighborhoods (a.k.a. localities), then provide a 100% distance penality.
+2. However, assume that intercity neighborhoods are defined based on natural human clusters. As such, if two points are in the same city AND are in the same neighborhood locality, then give a 20% distance bonus.
+
+Applying these rules yields 7 clusters (vs. 5):
 ```
 Model Performance and Metrics
 ================================================================================
@@ -87,19 +95,24 @@ Adjusted Rand Index: 0.000
 Adjusted Mutual Information: 0.000
 Silhouette Coefficient: 0.467
 ```
-You can see the raw results [here](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/vincenty-plus-gadm_results.txt).
+You can see the raw results [here](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-results/vincenty-plus-gadm_results.txt). Here is the `matplotlib` Mercator view:
+![V-GADM](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-results/vincenty-plus-gadm_matplotlib.png)
 
-What changed?...
-![Arlington](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/map_arlington.png)
-Correctly I-66
+This view shows two places where simple Vincenty clusters were divided: Arlington, VA and central Washington, DC:
 
-And DC, going around the White House is lots of traffic:
-![DC Neighborhood](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/map_dc.png)
+###### Let's look at Arlington
+The two POIs in Arlington are within 1 km of each other but in two different neighborhoods (*Virginia Square* and *Waverly Hills*). These neighborhoods are separated by Route I-66:
+![Arlington](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-results/map_arlington.png)
+Adding the modified GADM rule allowd DBSCAN to "recognize" this using neighborhood as a human proxy input.
 
-However, when in same Neighborhood, got it write
-![By the Pad](https://github.com/JimHaughwout/GADM_DBSCAN/blob/results/sample-results/map_old_town.png)
+###### Let's look at Washington, DC
+Adding GADM features split the three Washington POIs into two clusters (even though all were within 1 km of each other). One cluster was to the west of *The White House* (in *Northwest Washington*). The other was north (in *Downtown*):
+![DC Neighborhood](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-results/map_dc.png)
+Anyone who has driven around DC will tell you this makes sense also, as the *The White House* creates lots of detours.
 
-
+##### Intra-neighborhood Traffic
+As expected, using GADM features kept points that are close together AND in the same intercity neighborhood together. Here is Old Town, Alexandria:
+![By the Pad](https://github.com/JimHaughwout/GADM_DBSCAN/blob/master/sample-results/map_old_town.png)
 
 ## Options
 Currently the program defines options in a [`settings.py`](https://github.com/JimHaughwout/gadm_scan/blob/master/settings.py) file:
@@ -114,13 +127,10 @@ Setting | Description | Example Values
 `MODE` | Custom distance metric formula to use. See below. | See above
 `DEFAULT_RADIUS` | Default ZOA radius for DBSCAN epsilon, in km | `1.0`
 `DEFAULT_ROUNDING` | Default rounding in decimal places, for GPS coordinates. | `4`
-`LOCAL`* | Adjustment factor for coordinates in same  neighborhood | `0.4`
+`LOCAL`* | Adjustment factor for coordinates in same  neighborhood | `0.8`
 `X_TOWN`* | Adjustment factor for coordinates in same city | `2.0`
 
-*These are settings are ignored in `vincenty-basic` mode.
-When Adjustment Factor is > 1, it is a penalty (when < 1, it is a bonus). Both are combined.
-For example, we default 2x as penalty for cross-town (`X_TOWN = 2.0`) transit but scale this back
-60% to 1.2 (`2.0 * 0.4`) if both points are in the same neighborhood (`LOCAL = 0.4`).
+*These are settings are ignored in `vincenty-basic` mode. See **Sample Results** above for discussion of use of `LOCAL` and `X_TOWN` settings.
 
 #### CSV File Settings
 The script can take in any CSV file of POIs, as long as the file contains
