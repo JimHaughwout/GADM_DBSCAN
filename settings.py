@@ -2,8 +2,8 @@
 ZOA_SUMMARY_TO_SCREEN = True
 MATPLOT_ZOA_CLUSTERS = True
 
-MODE = 'basic-vincenty'
-#MODE = 'vincenty-gadm'  
+#MODE = 'basic-vincenty'
+MODE = 'vincenty-gadm'  
 #MODE = 'proxy'
 
 DEBUG = False
@@ -11,7 +11,7 @@ DEBUG = False
 # Set parameters for clustering
 DEFAULT_RADIUS = 1.0
 DEFAULT_ROUNDING = 4
-LOCAL = 0.4
+LOCAL = 0.8
 X_TOWN = 2.0
 
 # Set these based on your input and output CSVs

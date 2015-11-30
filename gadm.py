@@ -152,8 +152,10 @@ def geodist_gadm(x, y, poi_dataset):
     base_distance = vincenty(p1, p2).km
     scored_distance = base_distance
 
-    if c1 == c2: scored_distance *= s.X_TOWN
-    if n1 == n2: scored_distance *= s.LOCAL
+    # If traveling within same city that is big enough to have neighborhoods
+    if c1 == c2 and (n1 != None or n2 != None):
+        if n1 == n2: scored_distance *= s.LOCAL # In-neighborhood bonus
+        else: scored_distance *= s.X_TOWN # Cross-town penalty
 
     if DEBUG and idx1 != idx2: 
         print "Distance %s (%s, %s) - %s (%s, %s): %.4f km (as %.4f)" % (p1, n1,
@@ -217,8 +219,9 @@ def geodist_proxy(x, y, poi_dataset):
     base_distance = vincenty(p1, p2).km
     scored_distance = base_distance
 
-    if c1 == c2: scored_distance *= s.X_TOWN
-    if n1 == n2: scored_distance *= s.LOCAL
+    if c1 == c2 and (n1 != None and n2 != None): # See note above
+        if n1 == n2: scored_distance *= s.LOCAL
+        else: scored_distance *= s.X_TOWN
 
     if DEBUG and poi_id1 != poi_id2: 
         print "Distance %s (%s, %s) - %s (%s, %s): %.4f km (as %.4f)" % (p1, n1,
