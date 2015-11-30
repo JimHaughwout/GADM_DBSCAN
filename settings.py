@@ -11,13 +11,14 @@ DEBUG = False
 # Set parameters for clustering
 DEFAULT_RADIUS = 1.0
 DEFAULT_ROUNDING = 4
-LOCAL = 0.4
+LOCAL = 0.8
 X_TOWN = 2.0
 
 # Set these based on your input and output CSVs
-INPUT_FILE = "/Users/jhaughwout/DEV/GADM_DBSCAN/data/points_of_interest.csv"
-#OUTPUT_FILE = "/Users/jhaughwout/Desktop/zoa_results.csv"
+INPUT_FILE = "/Users/jhaughwout/DEV/GADM_DBSCAN/sample-data/points_of_interest.csv"
+# Recommend OUTPUT_FILE outside of path to avoid inadvertant git commit
 OUTPUT_FILE = None
+#OUTPUT_FILE = "/Users/jhaughwout/Desktop/zoa_results.csv" 
 
 LAT_KEY = 'lat'
 LNG_KEY = 'lng'
